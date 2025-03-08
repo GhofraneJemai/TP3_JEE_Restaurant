@@ -23,6 +23,7 @@ public class MetierImpl implements ImetierRestaurant {
                 r.setNomRestaurant(rs.getString("NOM_RESTAURANT"));
                 r.setTypeCuisine(rs.getString("TYPE_CUISINE"));
                 r.setAdresse(rs.getString("ADRESSE"));
+                r.setNote(rs.getDouble("NOTE")); // Ajout du champ note
                 restaurants.add(r);
             }
         } catch (SQLException e) {
@@ -31,15 +32,15 @@ public class MetierImpl implements ImetierRestaurant {
         return restaurants;
     }
 
-
     @Override
     public void addRestaurant(Restaurant r) {
         Connection conn = SingletonConnection.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO restaurants (NOM_RESTAURANT, TYPE_CUISINE, ADRESSE) VALUES (?, ?, ?)");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO restaurants (NOM_RESTAURANT, TYPE_CUISINE, ADRESSE, NOTE) VALUES (?, ?, ?, ?)");
             ps.setString(1, r.getNomRestaurant());
             ps.setString(2, r.getTypeCuisine());
             ps.setString(3, r.getAdresse());
+            ps.setDouble(4, r.getNote()); // Ajout du champ note
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
